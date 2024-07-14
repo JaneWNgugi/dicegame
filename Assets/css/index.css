@@ -1,0 +1,240 @@
+body {
+    font-family: Arial, sans-serif;
+    background: url('../img/theme/bg2.jpg');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 105vh;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    overflow: visible;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 90%; /* Adjusted for better responsiveness */
+    height: auto;
+    margin: 0 auto; /* Center container horizontally */
+    background-color: #ffffff;
+    border-radius: 8px;
+}
+
+h1 {
+    margin-bottom: 10px; /* Added some margin */
+    font-weight: 700;
+    font-size: 2.5rem; /* Responsive font size */
+}
+
+p {
+    font-size: 1.25rem; /* Responsive font size */
+    font-weight: 700;
+}
+
+label {
+    display: block;
+    font-weight: 700;
+    font-size: 1.25rem; /* Responsive font size */
+}
+
+.input-button-wrapper {
+    display: flex;
+    flex-direction: column; /* Stack input and button vertically on smaller screens */
+    gap: 10px; /* Space between input and button */
+    margin: 10px 0; /* Space above and below the wrapper */
+}
+
+#amount {
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    flex: 1; /* Allow the input to grow and fill available space */
+}
+
+#placeBet {
+    background: #007bff;
+    color: white;
+    border-radius: 20px; 
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    flex-shrink: 0;
+}
+
+#placeBet:hover {
+    transform: scale(1.05); /* Reduced scale for better UX */
+    background: #01501f;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    margin: 10px 0;
+}
+
+.number-btn-dice1 {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 40px;
+    cursor: pointer;
+    background-color: #003cff;
+    color: white;
+    font-size: 16px;
+    transition: transform 0.3s;
+}
+
+.number-btn-dice1.selected {
+    background-color: #000000;
+    color: white;
+}
+
+.number-btn-dice1:hover {
+    transform: scale(1.1);
+    background-color: #b30000;
+}
+
+.number-btn-dice2 {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 40px;
+    cursor: pointer;
+    background-color: red;
+    color: white;
+    font-size: 16px;
+    transition: transform 0.3s;
+}
+
+.number-btn-dice2.selected {
+    background-color: #000000;
+    color: white;
+}
+
+.number-btn-dice2:hover {
+    transform: scale(1.1);
+    background-color: #b30000;
+}
+.number-btn-dice3 {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 40px;
+    cursor: pointer;
+    background-color: green;
+    color: white;
+    font-size: 16px;
+    transition: transform 0.3s;
+}
+
+.number-btn-dice3.selected {
+    background-color: #000000;
+    color: white;
+}
+
+.number-btn-dice3:hover {
+    transform: scale(1.1);
+    background-color: #b30000;
+}
+
+.dice-container {
+    margin: 20px 0;
+}
+
+#dice {
+    width: 100px;
+    height: 100px;
+    transition: transform 1s;
+}
+
+@keyframes roll {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+}
+
+.roll {
+    animation: roll 1s;
+}
+
+.result, .error, .notification {
+    text-align: center;
+    font-size: 1.5rem; /* Responsive font size */
+}
+
+.error {
+    color: rgb(255, 0, 0);
+}
+
+.notification {
+    color: white;
+}
+
+#topdata {
+    padding-top: 30px;
+}
+
+.dicepredictionselection {
+    border-radius: 30px;
+    background: linear-gradient(to left, rgba(0, 128, 128, 0), white);
+    border: 1px solid #00808049;
+}
+
+.matcheswon {
+    font-size: 1.125rem; /* Responsive font size */
+
+    color: black;
+}
+
+/* Container for the paragraphs */
+.row-container {
+    display: grid;
+    grid-template-columns: repeat(3, 0.5fr); /* Create 3 equal columns */
+    gap: 10px; /* Space between columns */
+    align-items: center; /* Center items vertically */
+}
+
+.row-container p {
+    text-align: center; /* Center text within each paragraph */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .row-container {
+        grid-template-columns: 1fr; /* Stack items vertically on smaller screens */
+    }
+
+    .input-button-wrapper {
+        flex-direction: column; /* Stack input and button vertically */
+    }
+
+    h1 {
+        font-size: 2rem; /* Smaller font size for headings */
+    }
+
+    p {
+        font-size: 1rem; /* Smaller font size for paragraphs */
+    }
+
+    label {
+        font-size: 1rem; /* Smaller font size for labels */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px; /* Less padding on very small screens */
+    }
+
+    .button-group {
+        flex-direction: column; /* Stack buttons vertically */
+    }
+
+    .result, .error, .notification {
+        font-size: 1.25rem; /* Smaller font size for notifications */
+    }
+}

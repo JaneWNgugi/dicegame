@@ -1,0 +1,67 @@
+
+#diceNumber1 {
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: rgb(12, 45, 231);
+    color: white;
+    font-size: 16px;
+}
+
+#diceNumber1.selected {
+    background-color: #000000;
+    color:white;
+}
+#diceNumber1:hover {
+    transform: scale(1.05);
+    background-color: red;
+    color:white;
+}
+#diceNumber2 {
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: rgb(12, 45, 231);
+    color: white;
+    font-size: 16px;
+}
+
+#diceNumber2.selected {
+    background-color: #000000;
+    color:white;
+}
+#diceNumber2:hover {
+    transform: scale(1.25);
+    background-color: #ff0000;
+    color: rgb(255, 249, 249);
+}
+#diceNumber3 {
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: rgb(12, 45, 231);
+    color: white;
+    font-size: 16px;
+}
+
+#diceNumber3.selected {
+    background-color: #000000;
+    color:white;
+}
+#diceNumber3:hover {
+    transform: scale(1.05);
+    background-color: #ff2600;
+    color: rgb(255, 255, 255);
+}
