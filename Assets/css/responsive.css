@@ -1,67 +1,56 @@
 
-#diceNumber1 {
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: rgb(12, 45, 231);
-    color: white;
-    font-size: 16px;
+
+
+.result-table,
+.result-table2 {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0 auto;
 }
 
-#diceNumber1.selected {
-    background-color: #000000;
-    color:white;
-}
-#diceNumber1:hover {
-    transform: scale(1.05);
-    background-color: red;
-    color:white;
-}
-#diceNumber2 {
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: rgb(12, 45, 231);
-    color: white;
-    font-size: 16px;
+.result-table th,
+.result-table td,
+.result-table2 th,
+.result-table2 td {
+    border: none;
+    text-align: center;
 }
 
-#diceNumber2.selected {
-    background-color: #000000;
-    color:white;
-}
-#diceNumber2:hover {
-    transform: scale(1.25);
-    background-color: #ff0000;
-    color: rgb(255, 249, 249);
-}
-#diceNumber3 {
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: rgb(12, 45, 231);
-    color: white;
-    font-size: 16px;
+.result-table,
+.result-table2 {
+    display: none;
 }
 
-#diceNumber3.selected {
-    background-color: #000000;
+hr {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.result-table {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    background-color: #190379;
     color:white;
-}
-#diceNumber3:hover {
-    transform: scale(1.05);
-    background-color: #ff2600;
-    color: rgb(255, 255, 255);
-}
+  }
+  
+  .rowtable {
+    display: flex;
+    color:white;
+  }
+  
+  .cell {
+    flex: 1;
+    padding: 10px;
+    color:white;
+    border: 1px solid #dddddd5d; /* Adjust the border as needed */
+  }
+  
+  .heading {
+    font-weight: bold;
+  }
+  
+  .no-border-table .cell {
+    border: none;
+  }
+  

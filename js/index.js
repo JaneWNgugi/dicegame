@@ -1,18 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
     // DOM elements
+    const minusBtn = document.getElementById('minus-dice');
+    const plusBtn = document.getElementById('plus-dice');
+    const currentNumberSpan = document.getElementById('current-dice-count');
     const dice1Buttons = document.querySelectorAll('.number-btn-dice1');
     const dice2Buttons = document.querySelectorAll('.number-btn-dice2');
     const dice3Buttons = document.querySelectorAll('.number-btn-dice3');
-
-    const labelElement = document.getElementById('label');
-    const containerElement = document.querySelector('.container'); // Changed to querySelector for a single element
+    const resultTable = document.querySelector('.result-table');
+    const resultTable2 = document.querySelector('.result-table2');
+    const containerElement = document.querySelector('.container');
     const balanceElement = document.querySelector('.balance');
-    // dice images
+    const amountWon = document.querySelector('.kshwon');
     const dice1 = document.getElementById('dice1');
     const dice2 = document.getElementById('dice2');
     const dice3 = document.getElementById('dice3');
-
-    const diceButtons = document.querySelectorAll('.dice-btn');
     const amountInput = document.getElementById('amount');
     const resultElement = document.querySelector('.result');
     const inputError = document.querySelector('.inputerror');
@@ -30,127 +31,117 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize variables
     let balance = 5000;
-    let selectedNumberDice1 = null;
-    let selectedNumberDice2 = null;
-    let selectedNumberDice3 = null;
-    let selectedDice = null;
-    
-    let matchesWon = 0; // Initialize matches won counter
-
+    let selectedNumberDice1 = 1;
+    let selectedNumberDice2 = 1;
+    let selectedNumberDice3 = 1;
+    let currentN = 1; // Start with 1 dice
+    let selectedDice = currentN;
+    let userSelection = [];
     // Hide dice elements initially
     const diceElements = [dice1, dice2, dice3];
     diceElements.forEach(dice => dice.style.display = 'none');
-
-    // Hide prediction selection sections initially
     dicePredictionSelection.style.display = 'none';
     diceSection1.style.display = 'none';
     diceSection2.style.display = 'none';
     diceSection3.style.display = 'none';
 
-    // Function to add event listeners to buttons
-    function addNumberButtonListeners(buttons, setSelectedNumber) {
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove 'selected' class and reset background color for all buttons
-                buttons.forEach(btn => {
-                    btn.classList.remove('selected');
-                    // btn.style.backgroundColor = 'blue'; 
-                    dice1Buttons.forEach(btn => btn.style.backgroundColor = '');
-                    dice2Buttons.forEach(btn => btn.style.backgroundColor = '');
-                    dice3Buttons.forEach(btn => btn.style.backgroundColor = '');
-                    // Reset background color
-                });
-    
-                // Add 'selected' class and set background color for the clicked button
-                button.classList.add('selected');
-                button.style.backgroundColor = 'black';
-                // dice1Buttons.forEach(btn => btn.style.backgroundColor = '');
-                // dice2Buttons.forEach(btn => btn.style.backgroundColor = '');
-                // dice3Buttons.forEach(btn => btn.style.backgroundColor = '');
-                // Set selected number
-                setSelectedNumber(parseInt(button.getAttribute('data-number')));
-            });
+    // Function to update the display based on selected dice count
+    function updateDiceDisplay() {
+        diceSection1.style.display = currentN >= 1 ? 'block' : 'none';
+        diceSection2.style.display = currentN >= 2 ? 'block' : 'none';
+        diceSection3.style.display = currentN >= 3 ? 'block' : 'none';
+        dicePredictionSelection.style.display = 'flex';
+        diceElements.forEach((dice, index) => {
+            dice.style.display = index < currentN ? 'none' : 'none';
         });
+
+        // Update background color based on selected number of dice
+        // switch (currentN) {
+        //     case 1:
+        //         containerElement.style.backgroundColor = '#E5FFFA';
+        //         break;
+        //     case 2:
+        //         containerElement.style.backgroundColor = '#F0F4F4';
+        //         break;
+        //     case 3:
+        //         containerElement.style.backgroundColor = '#F0F5F4';
+        //         break;
+        //     default:
+        //         containerElement.style.backgroundColor = '';
+        //         break;
+        // }
     }
-    
 
-    // Event listeners for number buttons
-    addNumberButtonListeners(dice1Buttons, number => selectedNumberDice1 = number);
-    addNumberButtonListeners(dice2Buttons, number => selectedNumberDice2 = number);
-    addNumberButtonListeners(dice3Buttons, number => selectedNumberDice3 = number);
+    // Event listeners for plus and minus buttons
+    minusBtn.addEventListener('click', function () {
+        if (currentN > 1) {
+            currentN--;
+            currentNumberSpan.textContent = `Roll ${currentN} Dice`;
+            updateDiceDisplay();
+        }
+    });
 
-    // Event listener for dice buttons
+    plusBtn.addEventListener('click', function () {
+        if (currentN < 3) {
+            currentN++;
+            currentNumberSpan.textContent = `Roll ${currentN} Dice`;
+            updateDiceDisplay();
+        }
+    });
 
-     diceButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            diceButtons.forEach(btn => btn.classList.remove('selected'));
-            button.classList.add('selected');
-            selectedDice = parseInt(button.getAttribute('data-number'));
+    // Initial update for display
+    currentNumberSpan.textContent = `Roll ${currentN} Dice`;
+    updateDiceDisplay();
 
-            // Display relevant dice sections based on selected number of dice
-            diceElements.forEach((dice, index) => {
-                dice.style.display = index < selectedDice ? 'block' : 'none';
-            });
+    // Buttons configuration for number selection
+    const diceConfigs = [
+        { minusId: "minus-dice1", plusId: "plus-dice1", currentId: "current-number-dice1", diceIndex: 0 },
+        { minusId: "minus-dice2", plusId: "plus-dice2", currentId: "current-number-dice2", diceIndex: 1 },
+        { minusId: "minus-dice3", plusId: "plus-dice3", currentId: "current-number-dice3", diceIndex: 2 }
+    ];
 
-            // Display sections and update background color
-            diceSection1.style.display = selectedDice >= 1 ? 'block' : 'none';
-            diceSection2.style.display = selectedDice >= 2 ? 'block' : 'none';
-            diceSection3.style.display = selectedDice >= 3 ? 'block' : 'none';
-            dicePredictionSelection.style.display = 'block';
+    // Initialize the buttons for number selection
+    diceConfigs.forEach(({ minusId, plusId, currentId, diceIndex }) => {
+        const minusBtn = document.getElementById(minusId);
+        const plusBtn = document.getElementById(plusId);
+        const currentNumberSpan = document.getElementById(currentId);
+        let currentNumber = parseInt(currentNumberSpan.textContent);
 
-            // Update the background color based on selected number of dice
-            switch (selectedDice) {
-                case 1:
-                    containerElement.style.backgroundColor = '#E5FFFA	'; // Example color for 1 dice
-                    labelElement.style.color = 'black';
-                    labelElement.style.fontWeight = '100';
-                    // colors styles for dice 1 buttons sections
-                    dice1Buttons.forEach(btn => btn.style.backgroundColor = 'blue');
-                    dice1Buttons.selectedNumberDice1.forEach(btn => btn.style.backgroundColor = 'black');
-                    // selectedNumberDice2.style.backgroundColor = 'black';
-                    
-                    addNumberButtonListeners.style.selectedNumberDice1.backgroundColor='black';
-                    break;
-                case 2:
-                    labelElement.style.color = 'black';
-                    labelElement.style.fontWeight = '100';
-                    containerElement.style.backgroundColor = '#F0F4F4'; // Example color for 2 dice
-                    // colors styles for dice 1 buttons sections
-                    dice1Buttons.forEach(btn => btn.style.backgroundColor = 'blue');
-                    // colors styles for dice 2 buttons sections
-                    dice2Buttons.forEach(btn => btn.style.backgroundColor = 'red');
-                    selectedNumberDice2.style.backgroundColor = 'black';
-                    break;
-                case 3:
-                    labelElement.style.color = 'black';
-                    labelElement.style.fontWeight = '100';
-                    containerElement.style.backgroundColor = '#F0F5F4'; // Example color for 3 dice
-                    // colors styles for dice 1 buttons sections
-                    dice1Buttons.forEach(btn => btn.style.backgroundColor = 'blue');
-                    // colors styles for dice 2 buttons sections
-                    dice2Buttons.forEach(btn => btn.style.backgroundColor = 'red');
-                    // colors styles for dice 3 buttons sections
-                    dice3Buttons.forEach(btn => btn.style.backgroundColor = 'green');
-                    
-                   
-                    break;
-                default:
-                    dice1Buttons.forEach(btn => btn.style.backgroundColor = 'blue');
-                    // colors styles for dice 2 buttons sections
-                    dice2Buttons.forEach(btn => btn.style.backgroundColor = 'red');
-                    dice3Buttons.forEach(btn => btn.style.backgroundColor = 'green');
-                    containerElement.style.backgroundColor = 'white'; // Default color
+        minusBtn.addEventListener("click", function () {
+            if (currentNumber > 1) {
+                currentNumber--;
+                currentNumberSpan.textContent = currentNumber;
+                switch (diceIndex) {
+                    case 0: selectedNumberDice1 = currentNumber; break;
+                    case 1: selectedNumberDice2 = currentNumber; break;
+                    case 2: selectedNumberDice3 = currentNumber; break;
+                }
+            }
+
+        });
+
+        plusBtn.addEventListener("click", function () {
+            if (currentNumber < 6) {
+                currentNumber++;
+                currentNumberSpan.textContent = currentNumber;
+                switch (diceIndex) {
+                    case 0: selectedNumberDice1 = currentNumber; break;
+                    case 1: selectedNumberDice2 = currentNumber; break;
+                    case 2: selectedNumberDice3 = currentNumber; break;
+                }
             }
         });
+
     });
 
     // Function to roll the dice
     function rollDice(diceElement) {
-        diceElement.style.transition = 'transform 3s';
+        diceElement.style.transition = 'transform 0s'; // Set transition to 0 seconds for immediate rotation
+        const rotationSpeed = 3; // seconds
         const outcome = Math.floor(Math.random() * 6) + 1;
         const additionalRotationX = Math.floor(Math.random() * 4) * 360;
         const additionalRotationY = Math.floor(Math.random() * 4) * 360;
-
+    
         // Set rotation based on dice outcome
         let rotateX, rotateY;
         switch (outcome) {
@@ -161,16 +152,25 @@ document.addEventListener('DOMContentLoaded', function () {
             case 5: rotateX = 90; rotateY = 0; break;
             case 6: rotateX = 0; rotateY = 180; break;
         }
-
+    
+        // Apply initial rotation for immediate effect
         diceElement.style.transform = `rotateX(${rotateX + additionalRotationX}deg) rotateY(${rotateY + additionalRotationY}deg)`;
+    
+        // Set timeout to transition to final position after a brief delay
+        setTimeout(() => {
+            diceElement.style.transition = `transform ${rotationSpeed}s`; // Reset transition to original value
+            diceElement.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`; // Set final rotation
+        }, 100);
+    
         dicePredictionSelection.style.display = 'none';
+    
         return outcome;
     }
+    
 
-    // Event listener for placing a bet
     placeBetButton.addEventListener('click', () => {
         const betAmount = parseFloat(amountInput.value);
-
+       
         // Clear error messages
         diceSelectionErrors.textContent = '';
         numberSelectionError1.textContent = '';
@@ -180,6 +180,9 @@ document.addEventListener('DOMContentLoaded', function () {
         userSelectionNumbers.textContent = "";
         matchesWonElement.textContent = "";
         resultElement.textContent = "";
+        diceElements.forEach((dice, index) => {
+            dice.style.display = index < currentN ? 'block' : 'none';
+        });
         // Validate user inputs
         if (!selectedDice) {
             diceSelectionErrors.textContent = `Please select the number of dice you want to roll.`;
@@ -209,20 +212,22 @@ document.addEventListener('DOMContentLoaded', function () {
         // Deduct the bet amount from balance
         balance -= betAmount;
         balanceElement.textContent = `Balance: Ksh${balance}`;
+
         // Roll the dice and collect outcomes
         const outcomes = [];
-        for (let i = 0; i < selectedDice; i++) {
-            outcomes.push(rollDice(diceElements[i]));
+        for (let i = 0; i < currentN; i++) {
+            const outcome = rollDice(diceElements[i]); // Roll each selected dice
+            outcomes.push(outcome);
         }
 
         // Evaluate bet result after dice roll
         setTimeout(() => {
             // Collect user selections and outcomes
-            const selectedNumbers = [selectedNumberDice1, selectedNumberDice2, selectedNumberDice3].slice(0, selectedDice);
+            const selectedNumbers = [selectedNumberDice1, selectedNumberDice2, selectedNumberDice3].slice(0, currentN);
 
             // Check if predictions match the outcomes exactly
             let exactMatches = 0;
-            for (let i = 0; i < selectedDice; i++) {
+            for (let i = 0; i < currentN; i++) {
                 if (selectedNumbers[i] === outcomes[i]) {
                     exactMatches++;
                 }
@@ -232,43 +237,46 @@ document.addEventListener('DOMContentLoaded', function () {
             let payoutMultiplier = 0;
             if (exactMatches === 1) {
                 payoutMultiplier = 2; // 1 exact match
-                matchesWon=1;
+                matchesWon = 1;
+                resultTable2.style.display = 'block';
             } else if (exactMatches === 2) {
                 payoutMultiplier = 3; // 2 exact matches
-               matchesWon=2;
+                matchesWon = 2;
+                resultTable2.style.display = 'block';
             } else if (exactMatches === 3) {
-
                 payoutMultiplier = 5; // 3 exact matches
-                matchesWon=3;
-               
+                matchesWon = 3;
+                resultTable2.style.display = 'block';
             }
 
             if (payoutMultiplier > 0) {
                 balance += betAmount * payoutMultiplier;
-                resultElement.textContent = ` won! result:  ${outcomes.join(', ')}.`;
+                resultElement.textContent = `${outcomes.join(', ')}`;
             } else {
-                resultElement.textContent = ` lost! result: ${outcomes.join(', ')}.`;
+                resultElement.textContent = `${outcomes.join(', ')}`;
             }
 
             balanceElement.textContent = `Balance: Ksh${balance}`;
             amountInput.value = '';
-            
+
             dice1Buttons.forEach(btn => btn.classList.remove('selected'));
             dice2Buttons.forEach(btn => btn.classList.remove('selected'));
             dice3Buttons.forEach(btn => btn.classList.remove('selected'));
-            diceButtons.forEach(btn => btn.classList.remove('selected'));
-
-            // Display the user's selected numbers
-            userSelectionNumbers.textContent = `You selected: ${selectedNumbers.join(', ')}`;
-            matchesWonElement.textContent += ` Won: ${matchesWon}.`;
+           
+            amountWon.textContent = `KSH ${betAmount * payoutMultiplier}`;
+            userSelectionNumbers.textContent = `${selectedNumbers.join(', ')}`;
+            matchesWonElement.textContent += `${matchesWon}`;
+            
             dicePredictionSelection.style.display = 'none';
-
-            // Reset selected numbers,matcheswon and dice
+            resultTable.style.display = 'flex';
+            userSelection.style.color = 'white';
+            // Reset selected numbers, matches won and dice
             selectedNumberDice1 = null;
             selectedNumberDice2 = null;
             selectedNumberDice3 = null;
             selectedDice = null;
-            matchesWon=0;
+            matchesWon = 0;
+            
         }, 3000);
     });
 });
